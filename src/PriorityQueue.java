@@ -1,15 +1,15 @@
 public class PriorityQueue {
-    public TreeNode[] queue;
+    public BinarySearchTree[] queue;
     public int size = -1;
     public static int maxSize;
 
     public PriorityQueue(int items){
         maxSize = items;
-        queue = new TreeNode[maxSize];
+        queue = new BinarySearchTree[maxSize];
         size = 0;
     }
 
-    public void insert(TreeNode item){
+    public void insert(BinarySearchTree item){
         if (size >= queue.length -1){
             throw new IndexOutOfBoundsException();
         }
@@ -22,8 +22,8 @@ public class PriorityQueue {
         }
         else{
             for(i = size-1; i >= 0; i--){
-                if (item.id < queue[i].id){
-                    //If smaller
+                if (item.root.id > queue[i].root.id){
+                    //If larger
                     queue[i+1] = queue[i];
                     //push to end of queue
                 }
@@ -36,11 +36,11 @@ public class PriorityQueue {
         }
     }
 
-    public TreeNode remove(){
+    public BinarySearchTree remove(){
         return queue[--size];
     }
 
-    public TreeNode peek(){
+    public BinarySearchTree peek(){
         return queue[size-1];
     }
 

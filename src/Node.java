@@ -1,10 +1,13 @@
-public class TreeNode { //Self Referencing class
+public class Node { //Self Referencing class
     int id;
     char data;
-    TreeNode leftChild;
-    TreeNode rightChild;
+    Node leftChild;
+    Node rightChild;
 
-    public TreeNode(int id, char data) {
+    public Node(int id) {
+        this.id = id;
+    }
+    public Node(int id, char data) {
         this.id = id;
         this.data = data;
     }

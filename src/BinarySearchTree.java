@@ -1,8 +1,8 @@
 public class BinarySearchTree {
-   TreeNode root;
+   Node root;
 
-    public TreeNode find(int key) {
-        TreeNode current = root;
+    public Node find(int key) {
+        Node current = root;
         while (current != null){
             if (key == current.id)
                 return current;
@@ -18,19 +18,18 @@ public class BinarySearchTree {
     }
 
     public void insert(int id, char data) {
-        TreeNode newNode = new TreeNode(id, data);
+        Node newNode = new Node(id, data);
         insert(newNode);
     }
 
-    //Todo: Implement the Node insertion
-    public void insert(TreeNode newNode) {
+    public void insert(Node newNode) {
         if(root == null){
             root = newNode;
             return;
         }
-        TreeNode current = root;
+        Node current = root;
         while (current != null){
-            if (newNode.id == current.id)
+            if (newNode.data == current.data && current.data != '\u0000')
                 //no duplicates allowed
                 throw new ArrayIndexOutOfBoundsException();
             if (newNode.id < current.id){
@@ -54,11 +53,10 @@ public class BinarySearchTree {
         }
     }
 
-    //Todo: Implement - delete a Node given a key
     public boolean delete(int key) {
         //search for node to be deleted
-        TreeNode current = root;
-        TreeNode parent = null;
+        Node current = root;
+        Node parent = null;
         boolean isLeftChild = false;
 
         while (current != null){
@@ -119,7 +117,7 @@ public class BinarySearchTree {
             }
         }
         else{ //Both children present
-            TreeNode successor = findSuccessor(current);
+            Node successor = findSuccessor(current);
 
             successor.leftChild = current.leftChild;
             if (successor != current.rightChild)
@@ -141,9 +139,9 @@ public class BinarySearchTree {
         return true;
     }
 
-    private TreeNode findSuccessor(TreeNode delNode){
-        TreeNode successor = delNode.rightChild;
-        TreeNode successorParent = delNode;
+    private Node findSuccessor(Node delNode){
+        Node successor = delNode.rightChild;
+        Node successorParent = delNode;
 
         if (successor.leftChild == null)
             return successor;
@@ -159,25 +157,73 @@ public class BinarySearchTree {
         return successor;
     }
 
-    public TreeNode getMinimum() {
+    private String traversePreOrder(Node root) {
+        if (root == null)
+            return "";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(root.id);
+        sb.append(": ");
+        sb.append(root.data);
+
+        String pointerRight = "---";
+        String pointerLeft = "|--";
+
+        traverseNodes(sb, "", pointerLeft, root.leftChild, root.rightChild != null);
+        traverseNodes(sb, "", pointerRight, root.rightChild, false);
+
+        return sb.toString();
+    }
+
+    private void traverseNodes(StringBuilder sb, String padding, String pointer,
+                               Node node, boolean hasRightSibling) {
+
+        if (node == null)
+            return;
+
+        sb.append("\n");
+        sb.append(padding);
+        sb.append(pointer);
+        sb.append(node.id);
+        sb.append(": ");
+        sb.append(node.data);
+
+        StringBuilder pb = new StringBuilder(padding);
+        if (hasRightSibling)
+            pb.append("|  ");
+        else
+            pb.append("   ");
+
+        String p = pb.toString();
+        String pntr = "|--";
+        traverseNodes(sb, p, pntr, node.leftChild, node.rightChild != null);
+        traverseNodes(sb, p, pntr, node.rightChild, false);
+    }
+
+    public Node getMinimum() {
         if (root == null)
             return null;
 
-        TreeNode current = root;
+        Node current = root;
         while(current.leftChild != null)
             current = current.leftChild;
 
         return current;
     }
 
-    public TreeNode getMaximum() {
+    public Node getMaximum() {
         if (root == null)
             return null;
 
-        TreeNode current = root;
+        Node current = root;
         while(current.rightChild != null)
             current = current.rightChild;
 
         return current;
+    }
+
+    public void print() {
+        String s = traversePreOrder(root);
+        System.out.println(s);
     }
 }

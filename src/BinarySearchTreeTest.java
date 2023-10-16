@@ -8,7 +8,7 @@ public class BinarySearchTreeTest {
         bst.insert(40, 'd');
         bst.insert(50, 'e');
 
-        TreeNode result = bst.find(50);
+        Node result = bst.find(50);
 
         System.out.println((char)result.data);
     }
